@@ -23,7 +23,7 @@
     </form>
 
     <script type="text/javascript">
-        const socket = io('http://192.168.1.112:3000/');
+        const socket = io('https://app-teste-socket.herokuapp.com/');
 
         var listUsers = [];
 
@@ -55,7 +55,7 @@
 
         function listarUsuarios(){
             listUsers = [];
-            $.get('http://192.168.1.112:3000/auth/users', (data) => {
+            $.get('https://app-teste-socket.herokuapp.com/auth/users/auth/users', (data) => {
                 data.forEach(element => listUsers.push(element))
             })  
         }
@@ -71,7 +71,7 @@
                 password: password
             }
 
-            $.post('http://192.168.1.112:3000/auth/register', object)
+            $.post('https://app-teste-socket.herokuapp.com/auth/register', object)
 
             listUsers.push(object)
 
