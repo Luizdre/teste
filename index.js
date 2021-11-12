@@ -9,8 +9,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-require('./controller/authController')(app);
-require('./controller/projectController')(app);
+require('./src/controller/authController')(app);
+require('./src/controller/projectController')(app);
 
 
 app.get('/', (req,res) => {
