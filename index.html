@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body onload="listarUsuarios()">
+    <div >
+        <table id="listUser" width="100%" border="1">
+            <th>Nome</th>
+            <th>E-mail</th>
+        </table>
+    </div>
+    <form id="create">
+        <input type="text" name="username" placeholder="Nome de usuário">
+        <input type="password" name="password" placeholder="Senha">
+        <input type="text" name="email" placeholder="E-mail">
+        <input type="button" onclick="createUser()" value="Criar">
+    </form>
+
+    <script type="text/javascript">
+        const socket = io('http://192.168.1.112:3000/');
+
+        var listUsers = [];
+
+        socket.on('list users', (data)=>{
+            listUsers = [];
+            listUsers = data;
+            $("#listUser").html("<th>Nome</th> <th>E-mail</th>")
+            listUsers.forEach((element) =>{
+                $("#listUser").append("<tr>")
+                $("#listUser").append("<td>" + element.name + "</td>")
+                $("#listUser").append("<td>" + element.email + "</td>")
+                $("#listUser").append("</tr>")
+            })
+            
+        })
+
+        socket.on('usuario registrado', (data)=>{
+            listUsers = [];
+            listUsers = data;
+            $("#listUser").html("<th>Nome</th> <th>E-mail</th>")
+            listUsers.forEach(element => {
+                $("#listUser").append("<tr>")
+                $("#listUser").append("<td>" + element.name + "</td>")
+                $("#listUser").append("<td>" + element.email + "</td>")
+                $("#listUser").append("</tr>")
+            });
+        })
+       
+
+        function listarUsuarios(){
+            listUsers = [];
+            $.get('http://192.168.1.112:3000/auth/users', (data) => {
+                data.forEach(element => listUsers.push(element))
+            })  
+        }
+
+        function createUser(){
+            var username = $('input[name=username').val();
+            var email = $('input[name=email').val();
+            var password = $('input[name=password').val();
+
+            var object = {
+                name: username,
+                email: email,
+                password: password
+            }
+
+            $.post('http://192.168.1.112:3000/auth/register', object)
+
+            listUsers.push(object)
+
+            // socket.emit('create user', listUsers)
+        }
+
+    </script>
+</body>
+</html>
