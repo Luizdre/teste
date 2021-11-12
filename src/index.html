@@ -58,6 +58,9 @@
             $.get('https://app-teste-socket.herokuapp.com/auth/users/auth/users', (data) => {
                 data.forEach(element => listUsers.push(element))
             })  
+            $.get('https://app-teste-socket.herokuapp.com/auth/users/auth/users', (data) => {
+                data.forEach(element => listUsers.push(element))
+            })  
         }
 
         function createUser(){
