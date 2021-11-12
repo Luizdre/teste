@@ -1,5 +1,6 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
+const path = require('path');
 const http = require('http').Server(app);
 global.socketIo = require('socket.io')(http,  {
     upgradeTimeout: 30000
@@ -9,12 +10,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-require('./src/controller/authController')(app);
-require('./src/controller/projectController')(app);
+require('./controller/authController')(app);
+require('./controller/projectController')(app);
 
 
 app.get('/', (req,res) => {
-    res.sendFile('C:/Users/Andre/Desktop/API/index.html')
+    res.sendFile(path.join(__dirname, '/index.html'))
 })
 
 socketIo.on('connection', (socket) =>{
