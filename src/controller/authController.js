@@ -44,7 +44,6 @@ watchUser.on('change', change => {
 router.get('/users', async (req, res) =>{
     User.find({}, (res, users) => {
         userList = users;
-        console.log(userList);
         socketIo.emit('list users', userList)})
     return res.send(userList);
     
@@ -67,11 +66,20 @@ router.post('/authenticate', async(req, res) => {
 });
 
 router.patch('/alter', async(req, res) =>{
-    const {email, name} = req.body;
+    const {id, isMarked} = req.body;
 
-    await User.updateOne({"id": req.body.id, "name":req.body.name, "email": req.body.email});
-    
-    res.send('Teste')
+    const user = await User.findById(id);
+
+    user.name = name;
+
+    await  user.update({isMarked: isMarked}).then((value) => { res.send(value)});
+
+})
+
+router.delete('/deleteUser', async(req, res) => {
+    const {email} = req.body;
+
+    await User.deleteOne({email}).then((value) => res.send(value));
 })
 
 
@@ -81,7 +89,6 @@ router.get('/geolocation', async(req, res) =>{
         headers: {"Authorization": "Token token=54877944cd5e4da524f8cc0e2abafd27"}
     })
     instance.get('https://www.cepaberto.com/api/v3/cep?cep=13476900').then(function(response){
-        console.log(response.data)
         res.send(response.data.latitude)
     })
 })
