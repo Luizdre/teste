@@ -70,7 +70,7 @@ router.patch('/alter', async(req, res) =>{
 
     const user = await User.findById(id);
 
-    user.name = name;
+    user.isMarked = isMarked;
 
     await  user.update({isMarked: isMarked}).then((value) => { res.send(value)});
 
